@@ -5,6 +5,7 @@ import java.io.IOException;
 class WrongStudentName extends Exception { }
 
 class WrongAge extends Exception { }
+class WrongDateOfBirth extends Exception { }
 
 class Main {
     public static Scanner scan = new Scanner(System.in);
@@ -25,6 +26,8 @@ class Main {
                 System.out.println("Błędne imie studenta!");
             }catch(WrongAge e) {
                 System.out.println("Błędny wiek studenta!");
+            }catch(WrongDateOfBirth e) {
+                System.out.println("Błędna data urodzenia studenta!");
             }
         }
     }
@@ -55,13 +58,20 @@ class Main {
         }
         return age;
     }
-
-    public static void exercise1() throws IOException, WrongStudentName, WrongAge {
-        var name = ReadName();
-        var age = ReadAge();
+    public static String ReadDateOfBirth() throws WrongDateOfBirth {
         scan.nextLine();
         System.out.println("Podaj datę urodzenia DD-MM-YYY");
         var date = scan.nextLine();
+        if(!date.matches("\\d{2}-\\d{2}-\\d{4}")) {
+            throw new WrongDateOfBirth();
+        }
+        return date;
+    }
+
+    public static void exercise1() throws IOException, WrongStudentName, WrongAge, WrongDateOfBirth  {
+        var name = ReadName();
+        var age = ReadAge();
+        var date = ReadDateOfBirth();
         (new Service()).addStudent(new Student(name, age, date));
     }
 
